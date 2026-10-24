@@ -47,3 +47,19 @@ counts measured structures in the study, not only those sharing an assay.
 Only rows with measurements are written; missing DOI seeds are skipped. DOI
 prefixes and case are normalized. Same-study series require review before being
 treated as measurements from one experiment.
+
+Add seed receptor names and species from RCSB PDB:
+
+```bash
+python -m mappers.lilac_receptors
+```
+
+Reads `mappings/lilac_sar.csv` and writes `mappings/lilac_sar_receptors.csv`,
+preserving every original row and column. Appends `pdb_protein_name` and
+`pdb_species` from PDB polymer entities matching the row's `uniprot_id`.
+Species is the protein's source organism, not the expression host. These fields
+describe the seed structure, not necessarily the analogue's affinity assay.
+Unmatched accessions or missing metadata leave the corresponding fields blank;
+multiple names or species are separated by `; `. Each PDB entry is fetched once
+per run. Fusion/chimeric constructs retain all source species reported for the
+matched polymer entity. Request failures stop the run before writing output.

@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Offline experimental SAR and bilayer-exposure explorer for a membrane-protein FEP campaign.">
+<title>LILAC · SAR explorer</title>
+<style>
+:root{--ink:#202d3b;--muted:#626e7c;--line:#dce1e7;--paper:#f5f6f8;--purple:#7251ac;--lilac:#e8ddfa;--teal:#13746d;--blue:#3775ac;--amber:#a45c13;--red:#ae4d57;--white:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);font-size:14px}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,select{touch-action:manipulation}button,select{cursor:pointer}button{border:1px solid var(--line);border-radius:7px;background:white;color:var(--ink);padding:8px 12px}button:hover{border-color:var(--purple);background:#faf7ff}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b29ad8;outline-offset:3px}a{color:var(--purple);text-underline-offset:3px}input,select{padding:9px 10px;border:1px solid #cbd1da;border-radius:7px;color:var(--ink);background:white;min-width:0}label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}h1,h2,h3,p{margin:0}h1{font-size:30px;line-height:1.18;letter-spacing:-1px}h2{font-size:20px;letter-spacing:-.4px}h3{font-size:14px}small,.small{font-size:12px}p{line-height:1.6}.muted{color:var(--muted)}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:var(--purple)}.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.spread{justify-content:space-between}.stack{display:grid;gap:16px}.tag{display:inline-block;padding:4px 7px;border-radius:4px;font-size:11px;background:#f0f2f5;color:#4d5b6a}.tag.purple{background:#eee7f8;color:#634390}.tag.teal{background:#e6f3ef;color:#14695e}.tag.amber{background:#fff0dd;color:#915415}.tag.red{background:#fae9eb;color:#9a3644}.divider{border:0;border-top:1px solid var(--line);margin:20px 0}.brand{display:flex;gap:12px;align-items:center}.mark{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--lilac);color:var(--purple);font-size:22px}.topbar{height:68px;padding:0 28px;border-bottom:1px solid var(--line);background:white;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand strong{font-size:17px;letter-spacing:2px}.brand span{font-size:12px}.topnav{display:flex;gap:6px}.topnav button{border-color:transparent}.topnav button[aria-pressed=true]{background:#f0eaf8;color:#67449e}.shell{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:calc(100vh - 68px)}aside{align-self:start;position:sticky;top:0;max-height:100vh;overflow-y:auto;background:#fbfbfd;border-right:1px solid var(--line);padding:24px 16px}aside .search{width:100%;margin:16px 0 10px}.series-list{display:grid;gap:6px;margin-top:16px}.series-item{text-align:left;padding:12px;display:grid;gap:6px;border:1px solid transparent;background:transparent;border-radius:8px;width:100%}.series-item[aria-pressed=true]{background:white;border-color:#cfc0e6;box-shadow:0 2px 6px #38295808}.series-item strong{font-size:12px;line-height:1.4}.series-item .mono{font-size:11px;color:var(--muted)}.series-item .series-meta{font-size:11px;color:var(--muted)}.series-item[aria-pressed=true] .series-code{color:var(--purple)}.series-code{font-size:13px;font-weight:700}.content{min-width:0;padding:28px 32px 50px;max-width:1700px;width:100%;margin:0 auto;align-self:start}.intro{display:grid;gap:9px;margin-bottom:22px}.notice{padding:12px 16px;border-left:3px solid #9675c5;background:#eee8f7;font-size:12px;line-height:1.65;margin:18px 0 24px}.notice strong{color:#60428a}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.metric{padding:16px;background:white;border:1px solid var(--line);border-radius:9px}.metric .value{font-size:27px;letter-spacing:-.8px;font-weight:650;line-height:1.2;margin-bottom:6px}.metric .value span{font-size:14px;color:var(--muted);font-weight:400}.metric small{display:block;color:var(--muted);line-height:1.5}.context{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px;margin:18px 0}.panel{background:white;border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.molecule{width:100%;height:210px;display:flex;align-items:center;justify-content:center}.molecule svg{max-width:100%;max-height:100%;width:100%;height:100%}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);line-height:1.5}.swatch{display:inline-block;width:9px;height:9px;margin-right:5px;border-radius:50%}.swatch.purple{background:#b18bda}.swatch.teal{background:var(--teal)}.swatch.amber{background:var(--amber)}.swatch.gray{background:#8b98a9}.swatch.blue{background:#a2c9ed}.metadata{display:grid;grid-template-columns:80px 1fr;gap:6px 12px;font-size:12px;line-height:1.55;margin-top:15px}.metadata dt{color:var(--muted)}.metadata dd{margin:0;overflow-wrap:anywhere}.plot{display:block;width:100%;height:auto}.plot text{font-family:inherit;font-size:11px;fill:var(--muted)}.plot .axis-title{font-size:12px;fill:var(--ink)}.plot .gridline{stroke:#e9edf1;stroke-width:1}.plot [data-compound]{cursor:pointer}.plot [data-compound]:focus{outline:none;stroke:var(--purple);stroke-width:3px}.plot-caption{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.6}.controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:18px 0}.controls label{flex:1 1 130px}.controls label.check{flex:0 1 auto;flex-direction:row;align-items:center;align-self:center;color:var(--ink);font-size:12px}.controls input[type=checkbox]{accent-color:var(--purple);width:16px;height:16px}.tabs{display:flex;gap:6px}.tabs button[aria-pressed=true]{border-color:#bba3dc;color:var(--purple);background:#f4effa}.chemical-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:16px}.compound-card{display:grid;grid-template-rows:auto 150px auto auto;gap:8px;text-align:left;padding:13px;background:white;border:1px solid var(--line);border-radius:9px;width:100%;min-width:0}.compound-card[aria-pressed=true]{border-color:var(--purple);box-shadow:0 0 0 1px var(--purple)}.compound-card .molecule{height:150px}.compound-card .measure{font-size:13px;font-weight:600;line-height:1.5}.compound-card .measure span{font-size:11px;font-weight:400;color:var(--muted)}.compound-card .card-meta{font-size:11px;color:var(--muted);line-height:1.6}.table-scroll{overflow-x:auto}.data-table{border-collapse:collapse;width:100%;font-size:12px;line-height:1.5}.data-table th{text-align:left;color:var(--muted);font-size:11px;font-weight:600;background:#fafbfc;padding:11px 12px;white-space:nowrap;border-bottom:1px solid var(--line)}.data-table td{padding:11px 12px;border-bottom:1px solid #edf0f3;vertical-align:top}.data-table tbody tr:last-child td{border-bottom:0}.data-table .num{font-variant-numeric:tabular-nums;white-space:nowrap}.data-table .open-series{padding:3px 7px;font-size:12px;color:var(--purple);font-weight:650}.empty{padding:24px;color:var(--muted);text-align:center;line-height:1.6}.inspector{margin-top:20px}.inspector-header{margin-bottom:16px;display:flex;justify-content:space-between;gap:12px;align-items:center}.inspector-grid{display:grid;grid-template-columns:250px minmax(0,1fr);gap:18px}.inspector .molecule{height:180px}.smiles{font-size:11px;line-height:1.6;overflow-wrap:anywhere;background:#f8f9fb;padding:10px;border-radius:6px}.detail-foot{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}.section-title{margin-top:28px;margin-bottom:8px}.overview-intro{max-width:850px;margin:12px 0 20px}.exposure-bar{width:78px;height:5px;border-radius:3px;background:#ece5f5;margin-top:7px}.exposure-bar span{display:block;height:100%;background:#9673c2;border-radius:3px}.overview-table td:first-child{min-width:180px}.overview-table tbody tr:hover{background:#fbf9fd}.overview-table a{overflow-wrap:anywhere}.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:16px}.method-grid p{font-size:12px}.method-grid h3{margin-bottom:6px}details summary{cursor:pointer;font-weight:600;font-size:13px}details[open] summary{margin-bottom:16px}.file-path{overflow-wrap:anywhere;font-size:11px}.footer{font-size:11px;color:var(--muted);line-height:1.7;margin-top:26px}.hidden,[hidden]{display:none!important}#status{font-size:12px;color:var(--teal);min-height:18px}.no-results{font-size:12px;line-height:1.6;color:var(--muted);padding:15px 10px}.series-link{font-size:11px;overflow-wrap:anywhere}#mobile-series{display:none}#active-filter-note{font-size:12px;color:var(--muted)}
+@media(min-width:1600px){.content{padding:36px 50px}.context{grid-template-columns:1fr 1fr}.molecule{height:230px}}
+@media(max-width:1100px){.shell{grid-template-columns:245px minmax(0,1fr)}.content{padding:24px}.context{grid-template-columns:1fr}.inspector-grid{grid-template-columns:1fr}.inspector .molecule{max-width:350px;margin:auto}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.method-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.topbar{height:auto;min-height:68px;padding:14px 16px;flex-wrap:wrap}.brand span{display:none}.shell{display:block}aside{position:static;max-height:none;overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding:16px}.series-list{max-height:300px;overflow:auto}.series-item{padding:10px}.content{padding:22px 16px}.topnav button{font-size:12px;padding:8px}h1{font-size:26px}.panel{padding:15px}.chemical-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}.metrics{gap:10px}.metric{padding:12px}.metric .value{font-size:24px}.context{gap:12px}.metadata{grid-template-columns:65px 1fr}#mobile-series{display:inline-block}.method-grid{gap:15px}}
+@media print{.topbar,.sidebar,.controls,.topnav,.detail-foot{display:none!important}.shell{display:block}.content{padding:0}body{background:white}.panel,.metric{break-inside:avoid}.chemical-grid{grid-template-columns:repeat(3,1fr)}}
+
+.overview-table{min-width:1550px}.overview-table th:first-child,.overview-table td:first-child{position:sticky;left:0;z-index:1;background:white;box-shadow:4px 0 5px #202d3b0a;max-width:240px}.overview-table th:first-child{z-index:2;background:#fafbfc}.overview-table th{white-space:normal;vertical-align:top}.overview-table th button{padding:0;border:0;background:transparent;border-radius:0;font-size:12px;font-weight:650;text-align:left;color:var(--ink);line-height:1.5;min-height:38px}.overview-table th[aria-sort=ascending] button,.overview-table th[aria-sort=descending] button{color:var(--purple)}.overview-table td{min-width:95px}.overview-table td.context-cell{min-width:240px;max-width:320px;line-height:1.7}.context-cell>div+div{margin-top:5px}.evidence-details{margin-top:10px}.evidence-details summary{font-size:11px;color:var(--purple)}.assay-evidence{border-top:1px solid var(--line);padding:9px 0;font-size:11px;line-height:1.6}.assay-evidence p{margin-top:5px}.structure-evidence{font-size:11px;line-height:1.6;padding-bottom:10px}.structure-summary{font-size:12px;line-height:1.8;margin:10px 0}.overview-table .evidence-details{min-width:165px}#overview-sort-status{margin:10px 0}.overview-controls{margin-bottom:12px}.overview-controls label{max-width:300px}.context-label{font-size:11px;line-height:1.6;color:var(--muted);margin-top:5px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="mark" aria-hidden="true">✳</div><div><strong>LILAC</strong> <span class="muted">/ lipid-exposed site SAR</span></div></div>
+  <nav class="topnav" aria-label="Explorer views"><button id="nav-explorer" aria-pressed="true">Series explorer</button><button id="nav-overview" aria-pressed="false">Campaign overview</button></nav>
+</header>
+<div class="shell">
+<aside class="sidebar">
+  <div class="row spread"><span class="eyebrow">Study series</span><span class="tag" id="series-count"></span><button id="mobile-series" aria-expanded="false" aria-controls="series-list">Show list</button></div>
+  <label for="search" class="small muted" style="margin-top:16px">Find a target, PDB, accession or DOI</label><input class="search" id="search" type="search" placeholder="Search the collection…" style="margin-top:7px">
+  <label for="list-sort">Order sidebar list<select id="list-sort"><option value="target">Target name</option><option value="size">Most analogues</option><option value="assay">Most same-assay analogues</option><option value="exposure">Most exposed seed</option></select></label>
+  <nav id="series-list" class="series-list" aria-label="Select a study series"></nav>
+  <p class="footer">A series = seed complex + UniProt + publication.<br>Repeated PDBs can represent different studies or receptor subunits.</p>
+</aside>
+<main class="content">
+<section id="explorer" aria-labelledby="target-title">
+  <div class="intro"><div class="row spread"><span class="eyebrow" id="series-eyebrow"></span><span class="tag purple">Experimental SAR · campaign planning</span></div><h1 id="target-title"></h1><div id="target-subtitle" class="row small muted"></div></div>
+  <div class="notice"><strong>Question for the campaign:</strong> does including a membrane improve FEP agreement at lipid-exposed sites? This collection provides experimental SAR and seed exposure annotations. <strong>No FEP predictions or paired membrane / no-membrane results are present.</strong></div>
+  <div class="metrics" id="series-metrics"></div>
+  <div class="context">
+    <section class="panel"><div class="panel-head"><h3>Structural seed</h3><span class="tag purple" id="seed-label"></span></div><div class="molecule" id="seed-drawing" role="img" aria-label="Seed chemical structure with bilayer-exposed heavy atoms highlighted in lilac"></div><div class="legend"><span><i class="swatch purple"></i>LILAC bilayer-exposed heavy atoms</span></div><dl class="metadata" id="seed-metadata"></dl></section>
+    <section class="panel"><div class="panel-head"><h3>Seed pose relative to the bilayer</h3><label>Projection<select id="projection"><option value="x">X / Z</option><option value="y">Y / Z</option></select></label></div><div id="membrane-plot"></div><div class="legend"><span><i class="swatch purple"></i>Exposed atom</span><span><i class="swatch gray"></i>Other heavy atom</span></div><p class="plot-caption" id="membrane-caption"></p></section>
+  </div>
+  <section class="panel" aria-labelledby="sar-title">
+    <div class="panel-head"><h2 id="sar-title">Experimental SAR</h2><button id="export-series">Export series CSV</button></div>
+    <p class="small muted">Select an endpoint and assay to inspect potency versus similarity to the seed. Click a point or structure to see the original records.</p>
+    <div class="controls"><label>Endpoint<select id="endpoint"></select></label><label>Assay / method<select id="assay"></select></label><label>Source<select id="source"><option value="all">Both sources</option><option value="chembl">ChEMBL</option><option value="bindingdb">BindingDB</option></select></label><label class="check"><input type="checkbox" id="same-assay">Same assay as seed only</label><button id="reset-filters">Reset</button></div>
+    <div class="row spread" style="margin-bottom:10px"><span id="active-filter-note" aria-live="polite"></span><div class="legend"><span><i class="swatch teal"></i>Same assay as seed</span><span><i class="swatch amber"></i>Different assay</span><span><i class="swatch gray"></i>Unknown</span><span>◇ seed</span><span>△ bound</span></div></div>
+    <div id="sar-plot"></div><p class="plot-caption">Higher p-values indicate stronger reported potency. Concentration endpoints: p = 9 − log₁₀(value in nM). Logarithmic endpoints retain their reported values. Bounds remain bounds; identical overlapping records share a marker. Similarity is chirality-aware Morgan Tanimoto, radius 2, 2048 bits.</p>
+  </section>
+  <div class="row spread section-title"><h2>Analogue structures <span class="muted" id="compound-count"></span></h2><span class="small muted"><i class="swatch blue"></i>Atoms outside the seed’s Murcko scaffold</span></div>
+  <p class="small muted">One card per distinct SMILES in the active filter. Values are listed as reported; records are never averaged. The seed is shown above.</p>
+  <div class="chemical-grid" id="compound-grid"></div>
+  <section class="panel inspector" id="inspector" hidden aria-labelledby="inspector-title"><div class="inspector-header"><h2 id="inspector-title">Selected compound</h2><button id="close-inspector">Close details</button></div><div class="inspector-grid"><div><div class="molecule" id="inspector-drawing"></div><div class="smiles mono" id="inspector-smiles"></div><div class="detail-foot"><button id="copy-smiles">Copy SMILES</button></div></div><div><p class="small muted" style="margin-bottom:12px">All records for this compound in the selected study, including records hidden by the current filters.</p><div class="table-scroll" id="record-table"></div></div></div></section>
+</section>
+<section id="overview" hidden aria-labelledby="overview-title">
+<div class="eyebrow">FEP campaign planning</div><h1 id="overview-title" style="margin-top:9px">The experimental landscape</h1>
+<p class="overview-intro muted">Compare the available study series before choosing transformations. Exposure belongs to the structural seed. Click any column heading to sort; click again to reverse the order.</p>
+<div class="metrics" id="overview-metrics"></div>
+<div class="notice"><strong>Experimental context:</strong> cell systems, blood and microsomes come from ChEMBL assay descriptions and fields. An expression host does not establish the membrane preparation or lipid composition. BindingDB records without assay IDs remain unspecified. No paired membrane / no-membrane FEP results are present.</div>
+<section class="panel"><div class="panel-head"><h2>All study series</h2><button id="export-overview">Export summary CSV</button></div>
+<div class="controls overview-controls">
+<label>Range endpoint<select id="overview-range-endpoint"><option value="all">All endpoints — sort by largest span</option></select></label>
+<label>Structure method<select id="overview-structure-method"><option value="X-RAY DIFFRACTION">X-ray crystallography</option><option value="ELECTRON MICROSCOPY">Electron microscopy</option><option value="all">Any experimental method</option></select></label>
+</div>
+<p class="small muted">Ranges use exact analogue values within each endpoint, across reported assays. Structure coverage counts analogue SMILES from the SAR table, excluding the separately displayed seed record. Counts require exact stereochemical ligand identity and the same UniProt accession in the PDB entry. Scroll horizontally to see all columns; the target column stays visible.</p>
+<p class="small muted" id="overview-sort-status" role="status" aria-live="polite"></p>
+<div class="table-scroll"><table class="data-table overview-table" aria-label="Sortable campaign series overview"><thead><tr>
+<th aria-sort="none"><button data-sort="target">Target / seed ↕</button></th>
+<th aria-sort="none"><button data-sort="doi">Study DOI ↕</button></th>
+<th aria-sort="descending"><button data-sort="analogues">Analogues ↓</button></th>
+<th aria-sort="none"><button data-sort="sameAssay">Same-assay analogues ↕</button></th>
+<th aria-sort="none"><button data-sort="exposure">Seed exposure ↕</button></th>
+<th aria-sort="none"><button data-sort="range">Exact analogue range (log₁₀ units) ↕</button></th>
+<th aria-sort="none"><button data-sort="context">Experimental membrane / system ↕</button></th>
+<th aria-sort="none"><button data-sort="coverage"><span id="coverage-heading">Analogues with X-ray</span> ↕</button></th>
+<th aria-sort="none"><button data-sort="structures"><span id="structures-heading">X-ray PDB entries</span> ↕</button></th>
+<th aria-sort="none"><button data-sort="flags">Review flags ↕</button></th>
+</tr></thead><tbody id="overview-rows"></tbody></table></div>
+<p class="plot-caption">A zero means no exact match was found in this RCSB snapshot, not proof that no structure exists. Salts, protonation states, tautomers and unspecified stereochemistry are not merged. Target–ligand co-occurrence does not establish the binding subunit or pose; constructs and mutations require review. Counts are PDB entries, not chains or ligand copies. X-ray, EM and other methods are kept separate.</p>
+</section></section>
+<details class="panel" style="margin-top:28px"><summary>How to read the data · provenance and limitations</summary><div class="method-grid"><div><h3>What defines a series</h3><p>Each series uses a structural seed, a UniProt accession and a normalized publication DOI. Analogues share the seed’s nonempty Murcko scaffold. The mapper requires at least three distinct measured structures including the seed. Ring-changing and acyclic analogues are outside this screen. Series can overlap across seeds and studies.</p></div><div><h3>Assay evidence</h3><p>“Same assay” is the mapper’s ChEMBL assay-ID comparison for the same endpoint; “unknown” includes BindingDB and unidentified seed assays. It is not evidence of independent replication. The seed affinity table has no assay-ID column. Binding and functional ChEMBL assays are included upstream. The evidence snapshot now adds assay descriptions, B/F labels, organism, cell, tissue and subcellular-fraction fields from ChEMBL. An assay-organism field does not by itself identify the expression host or biological preparation.</p></div><div><h3>Values and duplicate records</h3><p>IC50, Ki and Kd are in nM; pIC50, pKi and pKd remain logarithmic. Endpoints are displayed separately. Qualifiers are preserved, with the inequality reversed on conversion from concentration to p-value. Bounds and approximate values are excluded from exact ranges. All database records are retained. Compound counts use distinct SMILES; identical marks overlap without averaging or deduplicating the source tables.</p></div><div><h3>Membrane annotations</h3><p>The local LILAC structures are OPM/PPM-oriented, with the bilayer midplane at Z = 0. The shaded region is the reported lipid-tail region, ± the half thickness. Exposure uses the supplied per-atom touches_bilayer field; it is not recomputed from Z. All percentages use non-hydrogen atoms. Seed exposure is not transferred to analogues. PDB protein names and source species describe the structure, including fusion constructs, and may differ from assay targets.</p></div></div><hr class="divider"><div id="provenance" class="stack"></div></details>
+<div class="footer row spread"><span id="footer-summary"></span><span>Offline · embedded structures and data · no network requests</span></div><p id="status" role="status" aria-live="polite"></p>
+</main></div>
+<script id="lilac-data" type="application/json">__LILAC_DATA__</script>
+<script>
+'use strict';
+const DATA = JSON.parse(document.getElementById('lilac-data').textContent);
+const $ = id => document.getElementById(id);
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const unique = values => [...new Set(values)];
+const svgText = value => escapeHtml(value);
+let currentSeries = DATA.series[0], currentCompound = null;
+let overviewSort = {key:'analogues', direction:'desc'};
+const colors = {true:'#13746d',false:'#a45c13',unknown:'#8b98a9',seed:'#7251ac'};
+const seedFor = series => DATA.seeds[series.seedId];
+const exposure = seed => seed.exposed / seed.heavy;
+const sameCount = series => series.compounds.filter(c => c.records.some(r => r.same_assay === 'true')).length;
+const assayKey = r => r.assay_id || (r.source === 'bindingdb' ? 'BindingDB — assay ID unavailable' : 'ChEMBL — assay ID unavailable');
+const endpointLabel = kind => kind.startsWith('p') ? kind : `p${kind}`;
+const reported = r => `${r.affinity_value}${r.affinity_measurement_type.startsWith('p') ? '' : ' nM'}`;
+const numeric = value => new Intl.NumberFormat('en',{maximumSignificantDigits:4}).format(value);
+
+function parseMeasurement(record) {
+  const match = record.affinity_value.trim().match(/^([<>=~≤≥]*)([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?)$/i);
+  if (!match) return null;
+  const value = Number(match[2]), logarithmic = record.affinity_measurement_type.startsWith('p');
+  if (!Number.isFinite(value) || (!logarithmic && value <= 0)) return null;
+  let relation = match[1].replace('≤','<=').replace('≥','>=');
+  if (!logarithmic) relation = relation.replace(/[<>]/g,c => c === '<' ? '>' : '<');
+  return {value:logarithmic ? value : 9 - Math.log10(value),relation,exact:relation === '' || relation === '='};
+}
+
+function exactRanges(series) {
+  const ranges = new Map();
+  for (const c of series.compounds) for (const r of c.records) {
+    const point = parseMeasurement(r);
+    if (!point?.exact) continue;
+    const kind = r.affinity_measurement_type;
+    if (!ranges.has(kind)) ranges.set(kind,[]);
+    ranges.get(kind).push(point.value);
+  }
+  return [...ranges].map(([kind,values]) => ({kind,min:Math.min(...values),max:Math.max(...values),span:Math.max(...values)-Math.min(...values)}));
+}
+
+function reviewFlags(series) {
+  const records = series.compounds.flatMap(c => c.records);
+  const flags = [];
+  if (sameCount(series) < 2) flags.push('Sparse same-assay coverage');
+  if (unique(records.map(r => r.affinity_measurement_type)).length > 1) flags.push('Multiple endpoints');
+  if (records.some(r => !parseMeasurement(r)?.exact)) flags.push('Qualified values');
+  if (records.some(r => r.same_assay === 'false')) flags.push('Different seed assay');
+  if (unique(records.map(assayKey)).length > 1) flags.push('Multiple / unknown assays');
+  if (seedFor(series).species.includes(';')) flags.push('Fusion / mixed source species');
+  if (series.compounds.some(c => c.pdbMatches.some(m => m.pdb === seedFor(series).pdb && m.components.includes(seedFor(series).ligand)))) flags.push('Analogue matches seed PDB ligand; review seed stereochemistry');
+  return flags;
+}
+
+function matchesFor(compound, method) {
+  return (compound.pdbMatches || []).filter(match => method === 'all' || match.methods.includes(method));
+}
+
+function structureStats(series, method = $('overview-structure-method').value) {
+  const compounds = series.compounds.filter(compound => matchesFor(compound,method).length);
+  const entries = unique(compounds.flatMap(compound => matchesFor(compound,method).map(match => match.pdb))).sort();
+  return {compounds, entries};
+}
+
+function selectedRanges(series) {
+  const kind = $('overview-range-endpoint').value;
+  return exactRanges(series).filter(range => kind === 'all' || range.kind === kind);
+}
+
+function experimentalContexts(series) {
+  const records = series.compounds.flatMap(compound => compound.records);
+  const ids = unique(records.map(record => record.assay_id).filter(Boolean));
+  const assays = ids.map(id => DATA.assays[id]).filter(Boolean);
+  const labels = unique(assays.map(assay => assay.context.label));
+  const unknownRecords = records.filter(record => !record.assay_id || !DATA.assays[record.assay_id]).length;
+  return {assays, labels, unknownRecords};
+}
+
+function contextCell(series) {
+  const context = experimentalContexts(series);
+  const labels = context.labels.map(label => `<div>${escapeHtml(label)}</div>`).join('');
+  return `${labels || '<span class="muted">Experimental system unspecified</span>'}
+    ${context.unknownRecords ? `<p class="muted small">${context.unknownRecords} records lack assay metadata</p>` : ''}
+    ${context.assays.length ? `<details class="evidence-details"><summary>Assay evidence (${context.assays.length})</summary>${context.assays.map(assay => `<div class="assay-evidence"><a href="${escapeHtml(assay.source_url)}" target="_blank" rel="noopener">${escapeHtml(assay.assay_chembl_id)}</a><div>${escapeHtml(assay.context.status)}</div><div class="muted">Membrane preparation: ${escapeHtml(assay.context.preparation)}</div><p>${escapeHtml(assay.description)}</p>${assay.assay_organism ? `<div class="muted">Assay organism field: ${escapeHtml(assay.assay_organism)}</div>` : ''}</div>`).join('')}</details>` : ''}`;
+}
+
+function pdbLinks(matches) {
+  return matches.map(match => `<a href="https://www.rcsb.org/structure/${encodeURIComponent(match.pdb)}" target="_blank" rel="noopener">${escapeHtml(match.pdb)}</a> <span class="muted">(${escapeHtml(match.components.join(', '))}; ${escapeHtml(match.methods.join(', '))})</span>`).join('<br>');
+}
+
+function overviewValue(series, key) {
+  const seed = seedFor(series);
+  if (key === 'target') return seed.name;
+  if (key === 'doi') return series.doi;
+  if (key === 'analogues') return series.compounds.length;
+  if (key === 'sameAssay') return sameCount(series);
+  if (key === 'exposure') return exposure(seed);
+  if (key === 'range') {
+    const ranges = selectedRanges(series);
+    return ranges.length ? Math.max(...ranges.map(range => range.span)) : null;
+  }
+  if (key === 'context') return experimentalContexts(series).labels.join('; ') || null;
+  if (key === 'coverage') return structureStats(series).compounds.length;
+  if (key === 'structures') return structureStats(series).entries.length;
+  return reviewFlags(series).join('; ');
+}
+
+function overviewSeries() {
+  const {key,direction} = overviewSort;
+  return filteredSeries().sort((a,b) => {
+    const left = overviewValue(a,key), right = overviewValue(b,key);
+    if (left === null || right === null) return left === right ? a.id.localeCompare(b.id) : left === null ? 1 : -1;
+    const difference = typeof left === 'number' ? left-right : left.localeCompare(right);
+    return (direction === 'asc' ? difference : -difference) || a.id.localeCompare(b.id);
+  });
+}
+
+function exportOverviewRow(series) {
+  const seed = seedFor(series), context = experimentalContexts(series), stats = structureStats(series);
+  return {
+    series_id:series.id,pdb_code:seed.pdb,ligand_id:seed.ligand,ligand_instance:seed.instance,
+    uniprot_id:seed.uniprot,target:seed.name,doi:series.doi,distinct_analogues:series.compounds.length,
+    same_assay_analogues:sameCount(series),seed_exposed_heavy_atoms:seed.exposed,seed_heavy_atoms:seed.heavy,
+    seed_exposure_fraction:exposure(seed),range_endpoint_filter:$('overview-range-endpoint').value,
+    exact_analogue_p_ranges:selectedRanges(series).map(range=>`${range.kind}: ${range.min.toFixed(3)} to ${range.max.toFixed(3)} (span ${range.span.toFixed(3)})`).join('; '),
+    experimental_systems:context.labels.join('; ') || 'Unspecified',
+    membrane_preparations:unique(context.assays.map(assay=>assay.context.preparation)).join('; ') || 'Unspecified',
+    records_without_assay_metadata:context.unknownRecords,
+    assay_evidence_ids:context.assays.map(assay=>assay.assay_chembl_id).join('; '),
+    structure_method:$('overview-structure-method').value,analogues_with_structures:stats.compounds.length,
+    distinct_pdb_entries:stats.entries.length,pdb_ids:stats.entries.join('; '),
+    matching_rule:DATA.structureSearch.matching,evidence_retrieved:DATA.evidenceRetrieved,
+    review_flags:reviewFlags(series).join('; ')
+  };
+}
+
+function filteredSeries() {
+  const query = $('search').value.toLowerCase().trim();
+  const list = DATA.series.filter(series => {
+    const seed = seedFor(series);
+    return [seed.name,seed.pdbName,seed.pdb,seed.ligand,seed.uniprot,seed.species,series.doi].join(' ').toLowerCase().includes(query);
+  });
+  const sort = $('list-sort').value;
+  return list.sort((a,b) => sort === 'size' ? b.compounds.length-a.compounds.length : sort === 'assay' ? sameCount(b)-sameCount(a) : sort === 'exposure' ? exposure(seedFor(b))-exposure(seedFor(a)) : seedFor(a).name.localeCompare(seedFor(b).name) || a.id.localeCompare(b.id));
+}
+
+function renderSeriesList() {
+  const list = filteredSeries();
+  $('series-count').textContent = `${list.length} / ${DATA.series.length}`;
+  $('series-list').innerHTML = list.length ? list.map(series => {
+    const seed = seedFor(series);
+    return `<button class="series-item" data-series="${series.id}" aria-pressed="${series.id===currentSeries.id}"><div class="row spread"><span class="series-code">${escapeHtml(seed.pdb)} · ${escapeHtml(seed.ligand)}</span><span class="tag">${series.compounds.length} analogues</span></div><strong>${escapeHtml(seed.name)}</strong><span class="mono">${escapeHtml(seed.uniprot)} · ${escapeHtml(seed.instance)}</span><span class="series-meta">${Math.round(exposure(seed)*100)}% seed exposure · ${sameCount(series)} same-assay</span><span class="mono" style="overflow-wrap:anywhere">${escapeHtml(series.doi)}</span></button>`;
+  }).join('') : '<p class="no-results">No matching series. Try a PDB code or a shorter target name.</p>';
+  renderOverview();
+}
+
+function metric(value,label,detail='') {
+  return `<div class="metric"><div class="value">${value}</div><small>${escapeHtml(label)}</small>${detail?`<small style="margin-top:4px">${escapeHtml(detail)}</small>`:''}</div>`;
+}
+
+function selectSeries(id, changeView = true) {
+  const series = DATA.series.find(s => s.id === id);
+  if (!series) return;
+  currentSeries = series; currentCompound = null;
+  location.hash = series.id;
+  const seed = seedFor(series);
+  $('series-eyebrow').textContent = `${series.id.replace('series-','Series ')} / ${DATA.series.length} · ${seed.classification}`;
+  $('target-title').textContent = seed.name;
+  $('target-subtitle').innerHTML = `<span class="mono">${escapeHtml(seed.pdb)} / ${escapeHtml(seed.ligand)} / ${escapeHtml(seed.instance)}</span><span>·</span><a href="https://www.uniprot.org/uniprotkb/${encodeURIComponent(seed.uniprot)}" target="_blank" rel="noopener">${escapeHtml(seed.uniprot)}</a><span>·</span><a class="series-link" href="https://doi.org/${encodeURI(series.doi)}" target="_blank" rel="noopener">${escapeHtml(series.doi)} ↗</a>`;
+  $('series-metrics').innerHTML = metric(series.compounds.length,'Distinct analogue structures',`${series.reportedSize} structures including seed, as reported`)+metric(sameCount(series),'Analogues with same-assay evidence','Any reported endpoint; ChEMBL IDs only')+metric(`${Math.round(exposure(seed)*100)}<span>%</span>`,'Seed heavy atoms exposed',`${seed.exposed} / ${seed.heavy} heavy atoms`)+metric(series.compounds.reduce((n,c)=>n+c.records.length,0),'Analogue measurement records','Includes cross-source duplicates');
+  $('seed-label').textContent = `${seed.pdb} · ${seed.ligand}`;
+  $('seed-drawing').innerHTML = seed.svg;
+  $('seed-metadata').innerHTML = `<dt>PDB entry</dt><dd><a href="https://www.rcsb.org/structure/${seed.pdb}" target="_blank" rel="noopener">${seed.pdb} ↗</a> · ligand ${escapeHtml(seed.ligand)} · ${escapeHtml(seed.instance)}</dd><dt>Structure method</dt><dd>${escapeHtml(seed.methods.join(', '))}</dd><dt>Source species</dt><dd>${escapeHtml(seed.species)}</dd><dt>PDB protein</dt><dd>${escapeHtml(seed.pdbName)}</dd><dt>Membrane</dt><dd>${escapeHtml(seed.membrane)}</dd>`;
+  const endpoints = unique(series.compounds.flatMap(c=>c.records.map(r=>r.affinity_measurement_type))).sort();
+  $('endpoint').innerHTML = endpoints.map(k=>`<option>${escapeHtml(k)}</option>`).join('');
+  $('source').value = 'all'; $('same-assay').checked = false;
+  $('inspector').hidden = true;
+  updateAssays(); renderMembrane(); renderSar(); renderSeriesList();
+  if (changeView) showView('explorer');
+}
+
+function updateAssays() {
+  const kind = $('endpoint').value;
+  const records = currentSeries.compounds.flatMap(c=>c.records).filter(r=>r.affinity_measurement_type===kind);
+  const assays = unique(records.map(assayKey)).sort();
+  $('assay').innerHTML = '<option value="all">All reported assays</option>'+assays.map(a=>`<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
+}
+
+function activeRecords(records, seed = false) {
+  return records.filter(r=>r.affinity_measurement_type===$('endpoint').value && ($('source').value==='all'||r.source===$('source').value) && (!$('same-assay').checked||(!seed&&r.same_assay==='true')) && ($('assay').value==='all'||(!seed&&assayKey(r)===$('assay').value)));
+}
+
+function plotStart(width,height,title,description) {
+  return `<svg class="plot" viewBox="0 0 ${width} ${height}" role="group" aria-label="${escapeHtml(title)}"><title>${escapeHtml(title)}</title><desc>${escapeHtml(description)}</desc>`;
+}
+
+function ticks(min,max,count=5) {
+  return Array.from({length:count},(_,i)=>min+(max-min)*i/(count-1));
+}
+
+function renderMembrane() {
+  const seed = seedFor(currentSeries), horizontal = $('projection').value;
+  const width = Math.max(240,$('membrane-plot').clientWidth),height=260,left=49,right=20,top=18,bottom=40;
+  const h=seed.halfThickness, atoms=seed.atoms;
+  const xmin=Math.min(...atoms.map(a=>a[horizontal]))-3,xmax=Math.max(...atoms.map(a=>a[horizontal]))+3;
+  const zmin=Math.min(-h,...atoms.map(a=>a.z))-3,zmax=Math.max(h,...atoms.map(a=>a.z))+3;
+  // Equal Angstrom scales preserve the deposited geometry in each projection.
+  const scale=Math.min((width-left-right)/(xmax-xmin),(height-top-bottom)/(zmax-zmin));
+  const xmid=(xmin+xmax)/2,zmid=(zmin+zmax)/2;
+  const x=v=>left+(width-left-right)/2+(v-xmid)*scale;
+  const z=v=>top+(height-top-bottom)/2-(v-zmid)*scale;
+  let svg=plotStart(width,height,'Seed ligand and bilayer projection',`${horizontal.toUpperCase()} versus Z coordinates in Angstroms. Lilac atoms carry LILAC exposure annotations.`);
+  svg+=`<rect x="${left}" y="${z(h)}" width="${width-left-right}" height="${z(-h)-z(h)}" fill="#f0eafa"/><line x1="${left}" x2="${width-right}" y1="${z(0)}" y2="${z(0)}" stroke="#c4b4dc" stroke-dasharray="4 4"/>`;
+  for(const value of [-h,h]) svg+=`<line x1="${left}" x2="${width-right}" y1="${z(value)}" y2="${z(value)}" stroke="#baa4d5"/><text x="${left-7}" y="${z(value)+4}" text-anchor="end">${value.toFixed(1)}</text>`;
+  svg+=`<text x="${left-7}" y="${z(0)+4}" text-anchor="end">0</text>`;
+  const atomMap=new Map(atoms.map(a=>[a.index,a]));
+  for(const [a,b] of seed.bonds){const u=atomMap.get(a),v=atomMap.get(b);svg+=`<line x1="${x(u[horizontal])}" x2="${x(v[horizontal])}" y1="${z(u.z)}" y2="${z(v.z)}" stroke="#acb5c1" stroke-width="1.8"/>`;}
+  for(const atom of atoms) svg+=`<circle cx="${x(atom[horizontal])}" cy="${z(atom.z)}" r="${atom.exposed?4:3}" fill="${atom.exposed?'#a581d0':'#7e8fa2'}" stroke="white" stroke-width=".6"><title>Atom ${atom.index} (${atom.element}) · ${horizontal.toUpperCase()} ${atom[horizontal].toFixed(2)} Å · Z ${atom.z.toFixed(2)} Å · ${atom.exposed?'bilayer-exposed':'not annotated as exposed'}</title></circle>`;
+  for(const value of ticks(xmin,xmax,width<400?3:5)) svg+=`<text x="${x(value)}" y="${height-bottom+20}" text-anchor="middle">${value.toFixed(1)}</text>`;
+  svg+=`<line x1="${left}" x2="${width-right}" y1="${height-bottom}" y2="${height-bottom}" stroke="#cbd2dc"/><text class="axis-title" x="${left+(width-left-right)/2}" y="${height-3}" text-anchor="middle">${horizontal.toUpperCase()} (Å)</text><text class="axis-title" transform="translate(13 ${top+(height-top-bottom)/2}) rotate(-90)" text-anchor="middle">Z (Å)</text></svg>`;
+  $('membrane-plot').innerHTML=svg;
+  $('membrane-caption').textContent=`Original ligand pose, equal axis scales. Shaded lipid-tail region: Z = ±${h.toFixed(1)} Å; midplane at Z = 0. Exposure is the supplied annotation, not inferred from the shading. Hydrogens omitted.`;
+}
+
+function renderSar() {
+  const compounds=currentSeries.compounds.map(c=>({...c,visible:activeRecords(c.records)})).filter(c=>c.visible.length).sort((a,b)=>b.similarity-a.similarity);
+  const seedRecords=activeRecords(currentSeries.seedRecords,true);
+  const points=[];
+  for(const c of compounds) for(const r of c.visible){const parsed=parseMeasurement(r);if(parsed)points.push({...parsed,similarity:c.similarity,id:c.id,record:r,status:r.same_assay});}
+  for(const r of seedRecords){const parsed=parseMeasurement(r);if(parsed)points.push({...parsed,similarity:1,id:'seed',record:r,status:'seed'});}
+  $('active-filter-note').textContent=`${compounds.length} analogues · ${compounds.reduce((n,c)=>n+c.visible.length,0)} analogue records · ${seedRecords.length} seed records${$('assay').value==='all'?' · across reported assays':''}`;
+  $('compound-count').textContent=`(${compounds.length})`;
+  drawSar(points);
+  $('compound-grid').innerHTML=compounds.length ? compounds.map(c=>{
+    const ids=unique(c.visible.map(r=>r.source_id)).filter(Boolean);
+    const values=unique(c.visible.map(reported));
+    const assays=unique(c.visible.map(r=>r.same_assay));
+    const status=assays.includes('true')?'teal':assays.includes('false')?'amber':'';
+    const label=assays.includes('true')?'Same-assay evidence':assays.includes('false')?'Different / unknown assay':'Assay match unknown';
+    return `<button class="compound-card" data-compound="${c.id}" aria-pressed="${currentCompound===c.id}" aria-label="Inspect ${escapeHtml(ids[0]||c.id)}"><div class="row spread"><strong class="mono small">${escapeHtml(ids[0]||c.id)}</strong><span class="tag">T = ${c.similarity.toFixed(3)}</span></div><div class="molecule" role="img" aria-label="Analogue chemical structure">${c.svg}</div><div class="measure">${values.slice(0,4).map(escapeHtml).join(' · ')}${values.length>4?` <span>+${values.length-4} values</span>`:''}<span> · ${escapeHtml($('endpoint').value)}</span></div><div class="card-meta"><span class="tag ${status}">${label}</span><br>${c.visible.length} records · ${unique(c.visible.map(r=>r.source)).map(s=>s==='chembl'?'ChEMBL':'BindingDB').join(' + ')}${ids.length>1?` · ${ids.length} database IDs`:''}<br>Exact same-target structures: ${matchesFor(c,'X-RAY DIFFRACTION').length} X-ray · ${matchesFor(c,'ELECTRON MICROSCOPY').length} EM</div></button>`;
+  }).join('') : '<p class="empty">No analogue records match these filters. Reset the filters to return to this series.</p>';
+}
+
+function drawSar(points) {
+  if(!points.length){$('sar-plot').innerHTML='<div class="empty">No plottable measurements match the active filters.</div>';return;}
+  const width=Math.max(240,$('sar-plot').clientWidth),height=330,left=64,right=28,top=24,bottom=52;
+  const allX=points.map(p=>p.similarity),allY=points.map(p=>p.value);
+  const xmin=Math.max(0,Math.min(...allX)-.035),xmax=Math.min(1.025,Math.max(...allX)+.035);
+  const ypad=Math.max(.4,(Math.max(...allY)-Math.min(...allY))*.12),ymin=Math.min(...allY)-ypad,ymax=Math.max(...allY)+ypad;
+  const x=v=>left+(v-xmin)/(xmax-xmin)*(width-left-right),y=v=>height-bottom-(v-ymin)/(ymax-ymin)*(height-top-bottom);
+  let svg=plotStart(width,height,`${endpointLabel($('endpoint').value)} versus seed similarity`,'Each point represents reported experimental measurements. Diamonds are seed records; triangles show bounds. Click an analogue marker for its source records.');
+  for(const value of ticks(ymin,ymax,5))svg+=`<line class="gridline" x1="${left}" x2="${width-right}" y1="${y(value)}" y2="${y(value)}"/><text x="${left-10}" y="${y(value)+4}" text-anchor="end">${value.toFixed(1)}</text>`;
+  for(const value of ticks(xmin,xmax,width<450?3:6))svg+=`<text x="${x(value)}" y="${height-bottom+21}" text-anchor="middle">${value.toFixed(2)}</text>`;
+  svg+=`<rect x="${left}" y="${top}" width="${width-left-right}" height="${height-top-bottom}" fill="none" stroke="#cdd4de"/>`;
+  const grouped=new Map();
+  for(const point of [...points].sort((a,b)=>(a.status==='true'?1:0)-(b.status==='true'?1:0))){const key=JSON.stringify([point.id,point.value,point.relation,point.status]);if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(point);}
+  for(const group of grouped.values()){
+    const p=group[0],cx=x(p.similarity),cy=y(p.value),color=colors[p.status]||colors.unknown;
+    const tip=`${p.id==='seed'?'Seed':p.record.source_id} · ${p.record.affinity_measurement_type} ${reported(p.record)} · ${p.relation||'='}${numeric(p.value)} ${endpointLabel(p.record.affinity_measurement_type)} · T ${p.similarity.toFixed(3)} · ${p.status==='seed'?'seed (assay ID not in seed table)':`assay match ${p.status}`} · ${group.length} overlapping records`;
+    const attrs=`data-compound="${p.id}" role="button" tabindex="0" aria-label="${escapeHtml(tip)}"`;
+    let mark;
+    if(p.id==='seed')mark=`<path d="M${cx},${cy-6} l6,6 l-6,6 l-6,-6 Z"/>`;
+    else if(/[<>]/.test(p.relation)){const direction=p.relation.includes('<')?1:-1;mark=`<path d="M${cx},${cy+direction*7} L${cx-6},${cy-direction*4} L${cx+6},${cy-direction*4} Z"/>`;}
+    else mark=`<circle cx="${cx}" cy="${cy}" r="5" ${p.relation.includes('~')?'stroke-dasharray="2 2"':''}/>`;
+    svg+=`<g ${attrs} fill="${color}" stroke="white" stroke-width="1.1"><title>${escapeHtml(tip)}</title><circle cx="${cx}" cy="${cy}" r="13" fill="transparent" stroke="none"/>${mark}</g>`;
+  }
+  svg+=`<text class="axis-title" x="${left+(width-left-right)/2}" y="${height-9}" text-anchor="middle">Similarity to seed (Morgan Tanimoto)</text><text class="axis-title" transform="translate(17 ${top+(height-top-bottom)/2}) rotate(-90)" text-anchor="middle">${svgText(endpointLabel($('endpoint').value))} (−log₁₀ M)</text></svg>`;
+  $('sar-plot').innerHTML=svg;
+}
+
+function sourceLink(record) {
+  if(!record.source_id) return escapeHtml(record.source);
+  const url=record.source==='chembl'?`https://www.ebi.ac.uk/chembl/explore/compound/${encodeURIComponent(record.source_id)}`:`https://www.bindingdb.org/rwd/bind/chemsearch/marvin/MolStructure.jsp?monomerid=${encodeURIComponent(record.source_id)}`;
+  return `<a href="${url}" target="_blank" rel="noopener">${escapeHtml(record.source_id)}</a><br><span class="muted">${record.source==='chembl'?'ChEMBL':'BindingDB'}</span>`;
+}
+
+function inspectCompound(id, scroll=true) {
+  const seed=seedFor(currentSeries),compound=id==='seed'?{svg:seed.svg,smiles:seed.smiles,records:currentSeries.seedRecords,pdbMatches:seed.pdbMatches}:currentSeries.compounds.find(c=>c.id===id);
+  if(!compound)return;
+  currentCompound=id;
+  $('inspector').hidden=false;
+  $('inspector-title').textContent=id==='seed'?`Seed · ${seed.pdb} / ${seed.ligand}`:`Analogue · ${compound.records.find(r=>r.source_id)?.source_id||id}`;
+  $('inspector-drawing').innerHTML=compound.svg;
+  $('inspector-smiles').textContent=compound.smiles;
+  $('record-table').innerHTML=`<table class="data-table"><thead><tr><th>Source / ID</th><th>Endpoint</th><th>Reported value</th><th>Assay ID</th><th>Match to seed</th><th>Experimental method</th><th>Experimental system</th></tr></thead><tbody>${compound.records.map(r=>`<tr><td>${sourceLink(r)}</td><td>${escapeHtml(r.affinity_measurement_type)}</td><td class="num">${escapeHtml(reported(r))}</td><td class="mono">${escapeHtml(r.assay_id||'Unavailable')}</td><td>${id==='seed'?'Seed record':escapeHtml(r.same_assay)}</td><td>${escapeHtml(r.exp_type||'Not reported')}</td><td>${escapeHtml(DATA.assays[r.assay_id]?.context.label || 'Unspecified — assay metadata unavailable')}<div class="context-label">${escapeHtml(DATA.assays[r.assay_id]?.context.status || '')}</div></td></tr>`).join('')}</tbody></table>`;
+  if(!compound.records.length)$('record-table').innerHTML='<p class="empty">No seed measurement found for this publication in the affinity table.</p>';
+  const pdbEvidence = `<div class="structure-summary"><strong>Exact same-target PDB matches: ${(compound.pdbMatches || []).length}</strong><br>${pdbLinks(compound.pdbMatches || []) || '<span class="muted">No exact match in the retrieved RCSB snapshot.</span>'}</div>`;
+  $('record-table').insertAdjacentHTML('afterbegin',pdbEvidence);
+  renderSar();
+  if(scroll)$('inspector').scrollIntoView({behavior:'auto',block:'start'});
+}
+
+function renderOverview() {
+  const list = overviewSeries(), method = $('overview-structure-method').value;
+  const methodLabel = method === 'all' ? 'experimental' : method === 'X-RAY DIFFRACTION' ? 'X-ray' : 'EM';
+  $('coverage-heading').textContent = `Analogues with ${methodLabel}`;
+  $('structures-heading').textContent = `${methodLabel === 'experimental' ? 'Experimental' : methodLabel} PDB entries`;
+  const labels = {target:'target name',doi:'DOI',analogues:'analogue count',sameAssay:'same-assay analogue count',exposure:'seed exposure',range:'exact experimental range',context:'experimental system',coverage:'analogues with structures',structures:'PDB entry count',flags:'review flags'};
+  $('overview-sort-status').textContent = `${list.length} series · sorted by ${labels[overviewSort.key]}, ${overviewSort.direction === 'asc' ? 'ascending' : 'descending'} · evidence retrieved ${DATA.evidenceRetrieved.slice(0,10)}${$('overview-range-endpoint').value === 'all' && overviewSort.key === 'range' ? ' · largest within-endpoint span' : ''}`;
+  for (const button of document.querySelectorAll('[data-sort]')) {
+    const active = button.dataset.sort === overviewSort.key;
+    button.closest('th').setAttribute('aria-sort',active ? overviewSort.direction === 'asc' ? 'ascending' : 'descending' : 'none');
+    const arrow = active ? overviewSort.direction === 'asc' ? '↑' : '↓' : '↕';
+    if (button.querySelector('span')) button.lastChild.textContent = ` ${arrow}`;
+    else button.textContent = button.textContent.replace(/[↑↓↕]/g,arrow);
+  }
+  $('overview-metrics').innerHTML=metric(DATA.series.length,'Study series',`${unique(DATA.series.map(s=>s.doi)).length} distinct publications`)+metric(Object.keys(DATA.seeds).length,'Seed complexes / accessions',`${unique(Object.values(DATA.seeds).map(s=>s.pdb)).length} distinct PDB entries`)+metric(DATA.uniqueAnalogues,'Distinct analogue SMILES','Across the complete collection')+metric(DATA.rowCount,'Analogue measurement records','Before combining overlapping plot marks');
+  $('overview-rows').innerHTML = list.length ? list.map(series => {
+    const seed=seedFor(series), ranges=selectedRanges(series), flags=reviewFlags(series), stats=structureStats(series,method);
+    const rangeHtml = ranges.length ? ranges.map(range=>`${escapeHtml(range.kind)}: <strong>${range.span.toFixed(2)}</strong><br><span class="muted">${range.min.toFixed(2)}–${range.max.toFixed(2)} p-units</span>`).join('<br>') : '<span class="muted">No exact values for this endpoint</span>';
+    const coverageHtml = `<strong>${stats.compounds.length} / ${series.compounds.length}</strong><br><span class="muted">analogue structures</span>${stats.compounds.length ? `<details class="evidence-details"><summary>Matched analogues</summary>${stats.compounds.map(compound=>`<div class="structure-evidence"><strong>${escapeHtml(compound.records.find(record=>record.source_id)?.source_id || compound.id)}</strong><br>${pdbLinks(matchesFor(compound,method))}</div>`).join('')}</details>` : ''}`;
+    return `<tr data-overview-series="${series.id}"><td><strong>${escapeHtml(seed.name)}</strong><br><button class="open-series mono" data-open="${series.id}">${seed.pdb} · ${seed.ligand} ↗</button><br><span class="muted mono">${escapeHtml(seed.uniprot)} · ${escapeHtml(seed.instance)}</span><br><span class="muted small">${escapeHtml(seed.methods.join(', '))}</span></td>
+    <td><a href="https://doi.org/${encodeURI(series.doi)}" target="_blank" rel="noopener">${escapeHtml(series.doi)}</a></td>
+    <td class="num">${series.compounds.length}<br><span class="muted">+ seed</span></td><td class="num">${sameCount(series)}</td>
+    <td class="num">${Math.round(exposure(seed)*100)}% (${seed.exposed}/${seed.heavy})<div class="exposure-bar"><span style="width:${exposure(seed)*100}%"></span></div></td>
+    <td>${rangeHtml}</td><td class="context-cell">${contextCell(series)}</td><td>${coverageHtml}</td><td class="num"><strong>${stats.entries.length}</strong><br><span class="muted">distinct entries</span></td>
+    <td>${flags.map(flag=>`<div class="small muted">${escapeHtml(flag)}</div>`).join('') || 'Review original assay conditions'}</td></tr>`;
+  }).join('') : '<tr><td colspan="10" class="empty">No series match the search.</td></tr>';
+}
+
+function showView(view) {
+  $('explorer').hidden=view!=='explorer'; $('overview').hidden=view!=='overview';
+  $('nav-explorer').setAttribute('aria-pressed',String(view==='explorer')); $('nav-overview').setAttribute('aria-pressed',String(view==='overview'));
+  if(view==='explorer'){renderMembrane();renderSar();}
+  window.scrollTo({top:0,behavior:'auto'});
+}
+
+function downloadCsv(filename,rows) {
+  if(!rows.length)return;
+  const columns=unique(rows.flatMap(Object.keys));
+  const cell=value=>'"'+String(value??'').replace(/"/g,'""')+'"';
+  const csv=[columns.map(cell).join(','),...rows.map(row=>columns.map(k=>cell(row[k])).join(','))].join('\r\n');
+  const link=document.createElement('a'),url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
+  link.href=url;link.download=filename;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  $('status').textContent=`Exported ${rows.length} rows to ${filename}.`;
+}
+
+$('series-list').addEventListener('click',event=>{const button=event.target.closest('[data-series]');if(button)selectSeries(button.dataset.series);});
+$('overview-rows').addEventListener('click',event=>{const button=event.target.closest('[data-open]');if(button){selectSeries(button.dataset.open);$('target-title').scrollIntoView();}});
+$('search').addEventListener('input',renderSeriesList);
+$('list-sort').addEventListener('change',renderSeriesList);
+$('overview').addEventListener('click',event=>{
+  const button = event.target.closest('[data-sort]');
+  if (!button) return;
+  const key = button.dataset.sort;
+  overviewSort = {key, direction:overviewSort.key === key ? overviewSort.direction === 'asc' ? 'desc' : 'asc' : ['target','doi','context','flags'].includes(key) ? 'asc' : 'desc'};
+  renderOverview();
+});
+for (const id of ['overview-range-endpoint','overview-structure-method']) $(id).addEventListener('change',renderOverview);
+
+$('projection').addEventListener('change',renderMembrane);
+$('endpoint').addEventListener('change',()=>{updateAssays();renderSar();});
+for(const id of ['assay','source','same-assay'])$(id).addEventListener('change',renderSar);
+$('reset-filters').addEventListener('click',()=>{$('source').value='all';$('same-assay').checked=false;updateAssays();renderSar();});
+for(const id of ['compound-grid','sar-plot']){
+  $(id).addEventListener('click',event=>{const element=event.target.closest('[data-compound]');if(element)inspectCompound(element.dataset.compound);});
+  $(id).addEventListener('keydown',event=>{if(event.target.tagName.toLowerCase()==='button')return;if(['Enter',' '].includes(event.key)){const element=event.target.closest('[data-compound]');if(element){event.preventDefault();inspectCompound(element.dataset.compound);}}});
+}
+$('close-inspector').addEventListener('click',()=>{$('inspector').hidden=true;currentCompound=null;renderSar();});
+$('copy-smiles').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('inspector-smiles').textContent);$('status').textContent='SMILES copied.';}catch{$('status').textContent='Clipboard unavailable here. Select and copy the SMILES text shown above.';}});
+$('nav-explorer').addEventListener('click',()=>showView('explorer'));
+$('nav-overview').addEventListener('click',()=>showView('overview'));
+$('export-series').addEventListener('click',()=>downloadCsv(`lilac-${seedFor(currentSeries).pdb}-${currentSeries.id}.csv`,[...currentSeries.seedRecords.map(r=>({...r,record_role:'seed',series_id:currentSeries.id})),...currentSeries.compounds.flatMap(c=>c.records.map(r=>({...r,record_role:'analogue',series_id:currentSeries.id}))) ]));
+$('export-overview').addEventListener('click',()=>downloadCsv('lilac-series-summary.csv',overviewSeries().map(exportOverviewRow)));
+$('mobile-series').addEventListener('click',()=>{const expanded=$('mobile-series').getAttribute('aria-expanded')==='true';$('mobile-series').setAttribute('aria-expanded',String(!expanded));$('series-list').classList.toggle('hidden',expanded);$('mobile-series').textContent=expanded?'Show list':'Hide list';});
+const narrow=window.matchMedia('(max-width:720px)');
+function adaptSidebar(){if(narrow.matches){$('series-list').classList.add('hidden');$('mobile-series').setAttribute('aria-expanded','false');$('mobile-series').textContent='Show list';}else{$('series-list').classList.remove('hidden');}}
+narrow.addEventListener('change',adaptSidebar);adaptSidebar();
+let resizeFrame;
+new ResizeObserver(()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>{if(!$('explorer').hidden){renderMembrane();renderSar();}});}).observe($('sar-plot'));
+window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(id!==currentSeries.id&&DATA.series.some(s=>s.id===id))selectSeries(id);});
+$('footer-summary').textContent=`${DATA.series.length} study series · ${Object.keys(DATA.seeds).length} seed complexes · ${DATA.rowCount} analogue records`;
+$('provenance').innerHTML=`<p class="small muted">Generated ${escapeHtml(DATA.generated)}. Embedded data is a snapshot; rerun build_visualization.py after changing the source tables. No remote libraries or structure services are required.</p>`+DATA.sources.map(source=>`<div><div class="mono file-path">${escapeHtml(source.path)}</div><div class="mono file-path muted">SHA-256 ${source.sha256}</div></div>`).join('')+'<p class="small muted">Per-atom CSV and SDF files are read from the local LILAC non-redundant complex directories. Atom elements and coordinates are checked before exposure is drawn on the seed structure. Analogue drawings highlight atoms outside a matched seed Murcko scaffold; they are not mapped FEP transformations.</p>';
+const overviewEndpoints = unique(DATA.series.flatMap(series=>series.compounds.flatMap(compound=>compound.records.map(record=>record.affinity_measurement_type)))).sort();
+$('overview-range-endpoint').innerHTML += overviewEndpoints.map(kind=>`<option value="${escapeHtml(kind)}">${escapeHtml(kind)}</option>`).join('');
+$('provenance').insertAdjacentHTML('beforeend', `<p class="small muted">Evidence retrieved ${escapeHtml(DATA.evidenceRetrieved)}: ${DATA.structureSearch.entriesRetrieved} experimental RCSB entries across ${Object.keys(DATA.structureSearch.targetEntryCounts).length} UniProt accessions, and ${Object.keys(DATA.assays).length} ChEMBL assay records. Public database identifiers were queried; compound matching was performed locally. <a href="https://search.rcsb.org/" target="_blank" rel="noopener">RCSB Search API</a> · <a href="https://www.ebi.ac.uk/chembl/" target="_blank" rel="noopener">ChEMBL</a>. Matching rule: ${escapeHtml(DATA.structureSearch.matching)}. Entries containing both a target and ligand are counted; binding-subunit assignment, mutants and construct compatibility need inspection.</p>`);
+selectSeries(DATA.series.some(s=>s.id===location.hash.slice(1))?location.hash.slice(1):'series-01',false);
+</script>
+</body>
+</html>
