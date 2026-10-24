@@ -16,5 +16,5 @@ The workflow is as follows:
 - `mappers.lilac_receptors` adds PDB protein names and species, producing
   `mappings/lilac_sar_receptors.csv`.
 
-We also provide a [website](visualization/index.html) for interactive viewing of
+We also provide a [website](https://nithishwer.github.io/lilac-affinity-mapper/visualization) for interactive viewing of
 molecules, affinity measurements and bilayer exposure.
